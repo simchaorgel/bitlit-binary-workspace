@@ -270,7 +270,7 @@
         </div>
 
         <div class="toolbar-section">
-            <button class="btn" id="placeValues">Place Values</button>
+            <button class="btn" id="placeValues">Show Values</button>
             <button class="btn" id="clearFormatting">Clear Format</button>
             <button class="btn" id="clearAll">Clear All</button>
         </div>
@@ -281,7 +281,6 @@
     </div>
 
     <div class="instructions">
-        <span><kbd>Paste</kbd> auto-fills</span>
         <span><kbd>Drag</kbd> select</span>
         <span><kbd>Shift+Click</kbd> extend</span>
         <span><kbd>Ctrl+C</kbd> copy</span>
@@ -649,13 +648,16 @@
         }
 
         function clearFormatting() {
-            document.querySelectorAll('.cell-wrapper').forEach(wrapper => {
+            if (selectedCells.size === 0) {
+                showToast('SELECT CELLS');
+                return;
+            }
+            selectedCells.forEach(wrapper => {
                 wrapper.style.background = DEFAULT_BG;
                 const label = wrapper.querySelector('.place-label');
                 label.textContent = '';
                 label.classList.remove('large');
             });
-            clearSelection();
             showToast('CLEARED');
         }
 
